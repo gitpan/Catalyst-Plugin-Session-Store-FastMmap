@@ -1,10 +1,11 @@
 NAME
-    Catalyst::Plugin::Session::FastMmap - FastMmap sessions for Catalyst
+    Catalyst::Plugin::Session::Store::FastMmap - FastMmap session storage
+    backend.
 
 SYNOPSIS
         use Catalyst qw/Session Session::Store::FastMmap Session::State::Foo/;
-    
-        MyApp->config->{session} = {
+        
+    MyApp->config->{session} = {
             expires => 3600,
             storage => '/tmp/session'
         };
@@ -15,7 +16,7 @@ SYNOPSIS
 DESCRIPTION
     "Catalyst::Plugin::Session::Store::FastMmap" is a fast session storage
     plugin for Catalyst that uses an mmap'ed file to act as a shared memory
-    interprocess cache. It is based on "Cache::FastMmap".
+    interprocess cache. It is based on Cache::FastMmap.
 
   METHODS
     get_session_data
@@ -33,6 +34,9 @@ CAVEATS
     sessions expired prematurely, due to the LRU caching policy employed by
     Cache::FastMmap. To get around this you can increase the "cache_size"
     parameter, or switch session storage backends.
+
+    This is particularly inappropriate for use as a backend for e.g.
+    Catalyst::Plugin::Session::PerUser, for example.
 
     Cache::FastMmap defaults to around 5mb (89 * 64k).
 

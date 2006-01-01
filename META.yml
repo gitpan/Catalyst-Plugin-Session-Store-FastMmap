@@ -1,8 +1,8 @@
 ---
 name: Catalyst-Plugin-Session-Store-FastMmap
-version: 0.01
+version: 0.02
 author: ~
-abstract: FastMmap sessions for Catalyst
+abstract: FastMmap session storage backend.
 license: perl
 requires:
   Cache::FastMmap: 0
@@ -13,5 +13,5 @@ requires:
 provides:
   Catalyst::Plugin::Session::Store::FastMmap:
     file: lib/Catalyst/Plugin/Session/Store/FastMmap.pm
-    version: 0.01
+    version: 0.02
 generated_by: Module::Build version 0.2611

@@ -9,13 +9,13 @@ use Path::Class     ();
 use File::Spec      ();
 use Catalyst::Utils ();
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 __PACKAGE__->mk_classdata(qw/_session_fastmmap_storage/);
 
 =head1 NAME
 
-Catalyst::Plugin::Session::FastMmap - FastMmap sessions for Catalyst
+Catalyst::Plugin::Session::Store::FastMmap - FastMmap session storage backend.
 
 =head1 SYNOPSIS
 
@@ -33,7 +33,7 @@ Catalyst::Plugin::Session::FastMmap - FastMmap sessions for Catalyst
 
 C<Catalyst::Plugin::Session::Store::FastMmap> is a fast session storage plugin
 for Catalyst that uses an mmap'ed file to act as a shared memory interprocess
-cache. It is based on C<Cache::FastMmap>.
+cache. It is based on L<Cache::FastMmap>.
 
 =head2 METHODS
 
@@ -52,14 +52,19 @@ L<Catalyst::Plugin::Session::Store>.
 
 =cut
 
+# The reference business is because Cache::FastMmap delegates to Storable with
+# no intervention, meaning that non reference data cannot be stored.
+# see L<https://rt.cpan.org/NoAuth/Bug.html?id=16762>
+# FIXME remember to remove this hack when the new version of Cache::FastMmap is
+# out, and to rely on it
 sub get_session_data {
     my ( $c, $sid ) = @_;
-    $c->_session_fastmmap_storage->get($sid);
+    ${ $c->_session_fastmmap_storage->get($sid) || return };
 }
 
 sub store_session_data {
     my ( $c, $sid, $data ) = @_;
-    $c->_session_fastmmap_storage->set( $sid, $data );
+    $c->_session_fastmmap_storage->set( $sid, \$data );
 }
 
 sub delete_session_data {
@@ -67,10 +72,7 @@ sub delete_session_data {
     $c->_session_fastmmap_storage->remove($sid);
 }
 
-sub delete_expired_sessions {
-    my $c = shift;
-    $c->_session_fastmmap_storage->empty(1);    # 1 means only expired
-}
+sub delete_expired_sessions { } # unsupported
 
 =item setup_session
 
@@ -99,7 +101,6 @@ sub setup_session {
     $c->_session_fastmmap_storage(
         Cache::FastMmap->new(
             share_file  => $cfg->{storage},
-            expire_time => $cfg->{expires},
             (
                 map { $_ => $cfg->{$_} }
                   grep { exists $cfg->{$_} } qw/init_file cache_size/
@@ -116,6 +117,9 @@ Very loaded sites with lots of data in the session hash may have old sessions
 expired prematurely, due to the LRU caching policy employed by
 L<Cache::FastMmap>. To get around this you can increase the C<cache_size>
 parameter, or switch session storage backends.
+
+This is particularly inappropriate for use as a backend for e.g.
+L<Catalyst::Plugin::Session::PerUser>, for example.
 
 L<Cache::FastMmap> defaults to around 5mb (89 * 64k).
 
