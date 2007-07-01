@@ -1,15 +1,22 @@
 package Catalyst::Plugin::Session::Store::FastMmap;
 
 use strict;
-use base
-  qw/Class::Data::Inheritable Class::Accessor::Fast Catalyst::Plugin::Session::Store/;
+use base qw/
+    Class::Data::Inheritable 
+    Class::Accessor::Fast 
+    Catalyst::Plugin::Session::Store/;
+
 use NEXT;
-use Cache::FastMmap;
+
+BEGIN {
+    require Cache::FastMmap            if $^O ne 'MSWin32';
+    require Cache::FastMmap::WithWin32 if $^O eq 'MSWin32';
+}
 use Path::Class     ();
 use File::Spec      ();
 use Catalyst::Utils ();
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 __PACKAGE__->mk_classdata(qw/_session_fastmmap_storage/);
 
@@ -50,21 +57,21 @@ cache. It is based on L<Cache::FastMmap>.
 These are implementations of the required methods for a store. See
 L<Catalyst::Plugin::Session::Store>.
 
+=item get_and_set_session_data
+
+This is the optional method for atomic write semantics. See
+L<Catalyst::Plugin::Session::AtomicWrite>.
+
 =cut
 
-# The reference business is because Cache::FastMmap delegates to Storable with
-# no intervention, meaning that non reference data cannot be stored.
-# see L<https://rt.cpan.org/NoAuth/Bug.html?id=16762>
-# FIXME remember to remove this hack when the new version of Cache::FastMmap is
-# out, and to rely on it
 sub get_session_data {
     my ( $c, $sid ) = @_;
-    ${ $c->_session_fastmmap_storage->get($sid) || return };
+    $c->_session_fastmmap_storage->get($sid);
 }
 
 sub store_session_data {
     my ( $c, $sid, $data ) = @_;
-    $c->_session_fastmmap_storage->set( $sid, \$data );
+    $c->_session_fastmmap_storage->set( $sid, $data );
 }
 
 sub delete_session_data {
@@ -73,6 +80,15 @@ sub delete_session_data {
 }
 
 sub delete_expired_sessions { } # unsupported
+
+sub get_and_set_session_data {
+    my ( $c, $sid, $sub ) = @_;
+    $c->_session_fastmmap_storage->get_and_set( $sid, sub {
+        my ( $key, $data ) = @_;
+        my $new = $sub->( $key, $data ); 
+        return $new;
+    });
+}
 
 =item setup_session
 
@@ -100,6 +116,7 @@ sub setup_session {
 
     $c->_session_fastmmap_storage(
         Cache::FastMmap->new(
+            raw_values  => 0,
             share_file  => $cfg->{storage},
             (
                 map { $_ => $cfg->{$_} }

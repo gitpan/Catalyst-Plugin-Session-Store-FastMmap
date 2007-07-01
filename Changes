@@ -1,3 +1,7 @@
+0.03
+        - Add support for Win32 by using Cache::FastMmap::WithWin32 on MS 
+          platforms --Ash Berlin
+
 0.02    2005-12-29 10:43:00
         - Workaround Storable/Cache::FastMmap limitation with non reference
           data

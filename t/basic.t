@@ -8,9 +8,32 @@ use File::Spec;
 
 use Catalyst::Plugin::Session::Test::Store (
     backend => "FastMmap",
-    config  => {
-        storage => ( my $tmp = File::Temp->new( UNLINK => 1 ) )
-          ->filename,    # $tmp: positive refcount
-    },
+    extra_tests => 1
 );
 
+{
+    package SessionStoreTest;
+
+    sub store_scalar : Global {
+        my ($self, $c) = @_;
+
+        $c->res->body($c->session->{'scalar'} = 456);
+    }
+
+    sub get_scalar : Global {
+        my ($self, $c) = @_;
+
+        $c->res->body($c->session->{'scalar'});
+    }
+
+    __PACKAGE__->setup_actions;
+
+}
+
+{
+    use Catalyst::Test "SessionStoreTest";
+    use Test::More;
+
+    my $x = get("/store_scalar");
+    is(get('/get_scalar'), 456, 'Can store scalar value okay');
+}

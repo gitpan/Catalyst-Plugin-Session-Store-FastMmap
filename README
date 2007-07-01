@@ -26,6 +26,10 @@ DESCRIPTION
         These are implementations of the required methods for a store. See
         Catalyst::Plugin::Session::Store.
 
+    get_and_set_session_data
+        This is the optional method for atomic write semantics. See
+        Catalyst::Plugin::Session::AtomicWrite.
+
     setup_session
         Sets up the session cache file.
 

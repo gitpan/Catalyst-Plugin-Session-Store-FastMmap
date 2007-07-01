@@ -6,8 +6,11 @@ my $build = Module::Build->new(
     license            => 'perl',
     module_name        => 'Catalyst::Plugin::Session::Store::FastMmap',
     requires           => {
-        'Catalyst::Plugin::Session' => '0.01',
-        'Cache::FastMmap'           => 0,
+        'Catalyst::Plugin::Session' => '0.09',
+        ($^O eq 'MSWin32' 
+            ? 'Cache::FastMmap::WithWin32'
+            : 'Cache::FastMmap'          
+        ) => 1.13,
         'File::Temp'                => 0,
         'File::Spec'                => 0,
         'Path::Class'               => 0,
