@@ -2,8 +2,8 @@ package Catalyst::Plugin::Session::Store::FastMmap;
 
 use strict;
 use base qw/
-    Class::Data::Inheritable 
     Class::Accessor::Fast 
+    Class::Data::Inheritable 
     Catalyst::Plugin::Session::Store/;
 
 use NEXT;
@@ -16,7 +16,7 @@ use Path::Class     ();
 use File::Spec      ();
 use Catalyst::Utils ();
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 __PACKAGE__->mk_classdata(qw/_session_fastmmap_storage/);
 
@@ -110,7 +110,11 @@ sub setup_session {
         "session_data",
       );
 
-    Path::Class::dir($tmpdir)->mkpath;
+    my $dir = Path::Class::file($file)->parent;
+
+    unless (-d $dir) {
+        $dir->mkpath;
+    }
 
     my $cfg = $c->config->{session};
 

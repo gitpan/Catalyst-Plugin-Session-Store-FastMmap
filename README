@@ -4,8 +4,8 @@ NAME
 
 SYNOPSIS
         use Catalyst qw/Session Session::Store::FastMmap Session::State::Foo/;
-        
-    MyApp->config->{session} = {
+    
+        MyApp->config->{session} = {
             expires => 3600,
             storage => '/tmp/session'
         };

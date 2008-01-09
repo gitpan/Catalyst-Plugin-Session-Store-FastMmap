@@ -1,3 +1,5 @@
+0.04    - patch for Class::C3 compatability - karman
+
 0.03
         - Add support for Win32 by using Cache::FastMmap::WithWin32 on MS 
           platforms --Ash Berlin
