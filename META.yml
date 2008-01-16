@@ -1,29 +1,16 @@
----
-name: Catalyst-Plugin-Session-Store-FastMmap
-version: 0.04
-author:
-  - |-
-    Andrew Ford
-    Andy Grundman
-    Christian Hansen
-    Yuval Kogman, C<nothingmuch@woobling.org>
-    Marcus Ramberg
-    Sebastian Riedel
-abstract: FastMmap session storage backend.
-license: perl
-resources:
-  license: http://dev.perl.org/licenses/
-requires:
-  Cache::FastMmap: 1.13
-  Catalyst::Plugin::Session: 0.09
-  File::Spec: 0
-  File::Temp: 0
-  Path::Class: 0
-provides:
-  Catalyst::Plugin::Session::Store::FastMmap:
-    file: lib/Catalyst/Plugin/Session/Store/FastMmap.pm
-    version: 0.04
-generated_by: Module::Build version 0.2808
+--- #YAML:1.0
+name:                Catalyst-Plugin-Session-Store-FastMmap
+version:             0.05
+abstract:            ~
+license:             ~
+generated_by:        ExtUtils::MakeMaker version 6.36
+distribution_type:   module
+requires:     
+    Cache::FastMmap:               1.13
+    Catalyst::Plugin::Session:     0.09
+    File::Spec:                    0
+    File::Temp:                    0
+    Path::Class:                   0
 meta-spec:
-  url: http://module-build.sourceforge.net/META-spec-v1.2.html
-  version: 1.2
+    url:     http://module-build.sourceforge.net/META-spec-v1.2.html
+    version: 1.2
