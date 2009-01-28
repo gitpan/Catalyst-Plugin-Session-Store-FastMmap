@@ -16,7 +16,7 @@ use Path::Class     ();
 use File::Spec      ();
 use Catalyst::Utils ();
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 __PACKAGE__->mk_classdata(qw/_session_fastmmap_storage/);
 
@@ -71,7 +71,8 @@ sub get_session_data {
 
 sub store_session_data {
     my ( $c, $sid, $data ) = @_;
-    $c->_session_fastmmap_storage->set( $sid, $data );
+    $c->_session_fastmmap_storage->set( $sid, $data )
+        or Catalyst::Exception->throw("store_session: data too large");
 }
 
 sub delete_session_data {
@@ -113,7 +114,11 @@ sub setup_session {
     my $dir = Path::Class::file($file)->parent;
 
     unless (-d $dir) {
-        $dir->mkpath;
+        $dir->mkpath($c->debug);
+    }
+
+    if ($c->debug) {
+        $c->log->debug("Session Store file: $file");
     }
 
     my $cfg = $c->config->{session};
@@ -121,10 +126,10 @@ sub setup_session {
     $c->_session_fastmmap_storage(
         Cache::FastMmap->new(
             raw_values  => 0,
-            share_file  => $cfg->{storage},
+            share_file  => ($file . ''),  # force serialize in case it is a Path::Class object
             (
                 map { $_ => $cfg->{$_} }
-                  grep { exists $cfg->{$_} } qw/init_file cache_size/
+                  grep { exists $cfg->{$_} } qw/init_file cache_size unlink_on_exit/
             ),
         )
     );
@@ -167,6 +172,8 @@ UID of the process in the filename.
 =item init_file
 
 =item cache_size
+
+=item unlink_on_exit
 
 See the L<Cache::FastMmap> documentation for the meaning of these keys. If
 these keys are not present L<Cache::FastMmap>'s defaults will be used.

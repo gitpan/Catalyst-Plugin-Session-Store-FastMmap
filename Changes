@@ -1,16 +1,24 @@
+0.06    28 Jan 2009
+        - die when Cache::FastMmap::set() returns false value (RT #33667)
+        - patch from ton.voon@altinity.com to pass unlink_on_exit option
+          to Cache::FastMmap
+        - correctly set storage path from config rather than default - karman
+        - clean up temp files after tests
+
 0.05    16 Jan 2008
         - removed all Module::Build cruft - karman
 
-0.04    - patch for Class::C3 compatability - karman
+0.04
+        - patch for Class::C3 compatability - karman
 
-0.03
+0.03    02 Jul 2007
         - Add support for Win32 by using Cache::FastMmap::WithWin32 on MS 
           platforms --Ash Berlin
 
-0.02    2005-12-29 10:43:00
+0.02    01 Jan 2006
         - Workaround Storable/Cache::FastMmap limitation with non reference
           data
 
-0.01
+0.01    14 Nov 2005
         - Initial release.
 

@@ -8,6 +8,7 @@ use File::Spec;
 
 use Catalyst::Plugin::Session::Test::Store (
     backend => "FastMmap",
+    config  => { storage => File::Temp::tempdir( 'sessionstoretestXXXX', CLEANUP => 1 ) },
     extra_tests => 1
 );
 
