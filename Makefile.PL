@@ -8,7 +8,8 @@ WriteMakefile
                            'Catalyst::Plugin::Session' => '0.09',
                            'File::Spec' => '0',
                            'File::Temp' => '0',
-                           'Path::Class' => '0'
+                           'Path::Class' => '0',
+                           'MRO::Compat' => '0',
                          },
           'INSTALLDIRS' => 'site',
           'EXE_FILES' => [],

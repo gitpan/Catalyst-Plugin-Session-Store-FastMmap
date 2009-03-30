@@ -2,11 +2,11 @@ package Catalyst::Plugin::Session::Store::FastMmap;
 
 use strict;
 use base qw/
-    Class::Accessor::Fast 
-    Class::Data::Inheritable 
+    Class::Accessor::Fast
+    Class::Data::Inheritable
     Catalyst::Plugin::Session::Store/;
 
-use NEXT;
+use MRO::Compat;
 
 BEGIN {
     require Cache::FastMmap            if $^O ne 'MSWin32';
@@ -16,7 +16,7 @@ use Path::Class     ();
 use File::Spec      ();
 use Catalyst::Utils ();
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 __PACKAGE__->mk_classdata(qw/_session_fastmmap_storage/);
 
@@ -86,7 +86,7 @@ sub get_and_set_session_data {
     my ( $c, $sid, $sub ) = @_;
     $c->_session_fastmmap_storage->get_and_set( $sid, sub {
         my ( $key, $data ) = @_;
-        my $new = $sub->( $key, $data ); 
+        my $new = $sub->( $key, $data );
         return $new;
     });
 }
@@ -100,7 +100,7 @@ Sets up the session cache file.
 sub setup_session {
     my $c = shift;
 
-    $c->NEXT::setup_session(@_);
+    $c->maybe::next::method(@_);
 
     my $tmpdir = Catalyst::Utils::class2tempdir($c)
       || Catalyst::Exception->throw("Can't determine tempdir for $c");
