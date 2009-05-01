@@ -4,7 +4,7 @@ WriteMakefile
           'NAME' => 'Catalyst::Plugin::Session::Store::FastMmap',
           'VERSION_FROM' => 'lib/Catalyst/Plugin/Session/Store/FastMmap.pm',
           'PREREQ_PM' => {
-                           'Cache::FastMmap' => '1.13',
+                           'Cache::FastMmap' => '1.29',
                            'Catalyst::Plugin::Session' => '0.09',
                            'File::Spec' => '0',
                            'File::Temp' => '0',

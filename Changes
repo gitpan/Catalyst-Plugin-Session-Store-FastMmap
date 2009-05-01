@@ -1,3 +1,6 @@
+0.08    01 May 2009
+        - Bump Cache::FastMmap requirement to 1.29 to fix RT#45210
+
 0.07    30 Mar 2009
         - Port from NEXT to MRO::Compat.
 
