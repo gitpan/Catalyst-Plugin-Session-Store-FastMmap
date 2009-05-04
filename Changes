@@ -1,3 +1,7 @@
+0.09    04 May 2009
+        - remove Win32 hack since Cache::FastMmap 1.29 supports Win32.
+          see https://rt.cpan.org/Ticket/Display.html?id=45642
+
 0.08    01 May 2009
         - Bump Cache::FastMmap requirement to 1.29 to fix RT#45210
 

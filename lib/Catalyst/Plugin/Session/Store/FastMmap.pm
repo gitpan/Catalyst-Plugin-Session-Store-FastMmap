@@ -8,15 +8,12 @@ use base qw/
 
 use MRO::Compat;
 
-BEGIN {
-    require Cache::FastMmap            if $^O ne 'MSWin32';
-    require Cache::FastMmap::WithWin32 if $^O eq 'MSWin32';
-}
+use Cache::FastMmap;
 use Path::Class     ();
 use File::Spec      ();
 use Catalyst::Utils ();
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 __PACKAGE__->mk_classdata(qw/_session_fastmmap_storage/);
 
