@@ -13,7 +13,7 @@ use Path::Class     ();
 use File::Spec      ();
 use Catalyst::Utils ();
 
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 __PACKAGE__->mk_classdata(qw/_session_fastmmap_storage/);
 

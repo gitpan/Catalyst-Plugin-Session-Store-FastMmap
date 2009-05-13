@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Catalyst-Plugin-Session-Store-FastMmap
-version:            0.09
+version:            0.10
 abstract:           ~
 author:  []
 license:            unknown
@@ -11,7 +11,7 @@ build_requires:
     ExtUtils::MakeMaker:  0
 requires:
     Cache::FastMmap:      1.29
-    Catalyst::Plugin::Session:  0.09
+    Catalyst::Plugin::Session:  0.22
     File::Spec:           0
     File::Temp:           0
     MRO::Compat:          0

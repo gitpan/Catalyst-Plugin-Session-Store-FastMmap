@@ -5,7 +5,7 @@ WriteMakefile
           'VERSION_FROM' => 'lib/Catalyst/Plugin/Session/Store/FastMmap.pm',
           'PREREQ_PM' => {
                            'Cache::FastMmap' => '1.29',
-                           'Catalyst::Plugin::Session' => '0.09',
+                           'Catalyst::Plugin::Session' => '0.22',
                            'File::Spec' => '0',
                            'File::Temp' => '0',
                            'Path::Class' => '0',

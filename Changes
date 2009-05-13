@@ -1,3 +1,9 @@
+0.10   13 May 2009
+        - Change tests to be compatible with Catalyst 5.80004
+        - Re-add /session-file prefix to the test session directory which was
+          present in 0.07. I can't see where this was removed, but the test
+          looks more correct with it. RT#45724
+
 0.09    04 May 2009
         - remove Win32 hack since Cache::FastMmap 1.29 supports Win32.
           see https://rt.cpan.org/Ticket/Display.html?id=45642
