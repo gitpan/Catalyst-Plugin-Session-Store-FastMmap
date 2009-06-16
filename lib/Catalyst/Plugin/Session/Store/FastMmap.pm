@@ -13,7 +13,7 @@ use Path::Class     ();
 use File::Spec      ();
 use Catalyst::Utils ();
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 __PACKAGE__->mk_classdata(qw/_session_fastmmap_storage/);
 
@@ -140,11 +140,17 @@ Very loaded sites with lots of data in the session hash may have old sessions
 expired prematurely, due to the LRU caching policy employed by
 L<Cache::FastMmap>. To get around this you can increase the C<cache_size>
 parameter, or switch session storage backends.
+L<Cache::FastMmap> defaults to around 5mb (89 * 64k).
 
 This is particularly inappropriate for use as a backend for e.g.
 L<Catalyst::Plugin::Session::PerUser>, for example.
 
-L<Cache::FastMmap> defaults to around 5mb (89 * 64k).
+As L<Cache::FastMmap> is not "thread-safe" (at least version 1.30 and before)
+therefore also this module does not work in multi-threaded enviroment. 
+It is "fork-safe", however keep in mind that on Win32 the perl "fork" call is 
+implemented as an emulation via threads - that is the reason why you cannot use
+this store for example when running you catalyst application on Win32 platform 
+with L<Catalyst::Engine::HTTP::Prefork> engine. 
 
 =head1 CONFIGURATION
 
