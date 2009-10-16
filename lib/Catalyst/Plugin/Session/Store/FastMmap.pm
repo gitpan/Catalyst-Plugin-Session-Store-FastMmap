@@ -13,7 +13,7 @@ use Path::Class     ();
 use File::Spec      ();
 use Catalyst::Utils ();
 
-our $VERSION = '0.11';
+our $VERSION = '0.12';
 
 __PACKAGE__->mk_classdata(qw/_session_fastmmap_storage/);
 
@@ -24,11 +24,13 @@ Catalyst::Plugin::Session::Store::FastMmap - FastMmap session storage backend.
 =head1 SYNOPSIS
 
     use Catalyst qw/Session Session::Store::FastMmap Session::State::Foo/;
-    
-    MyApp->config->{session} = {
-        expires => 3600,
-        storage => '/tmp/session'
-    };
+
+    MyApp->config(
+        'Plugin::Session' => {
+            expires => 3600,
+            storage => '/tmp/session'
+        },
+    );
 
     # ... in an action:
     $c->session->{foo} = 'bar'; # will be saved
@@ -102,7 +104,7 @@ sub setup_session {
     my $tmpdir = Catalyst::Utils::class2tempdir($c)
       || Catalyst::Exception->throw("Can't determine tempdir for $c");
 
-    my $file = $c->config->{session}{storage} ||=
+    my $file = $c->_session_plugin_config->{storage} ||=
       File::Spec->catfile(    # Cache::FastMmap doesn't like Path::Class objects
         $tmpdir,
         "session_data",
@@ -118,7 +120,7 @@ sub setup_session {
         $c->log->debug("Session Store file: $file");
     }
 
-    my $cfg = $c->config->{session};
+    my $cfg = $c->_session_plugin_config;
 
     $c->_session_fastmmap_storage(
         Cache::FastMmap->new(
@@ -146,15 +148,15 @@ This is particularly inappropriate for use as a backend for e.g.
 L<Catalyst::Plugin::Session::PerUser>, for example.
 
 As L<Cache::FastMmap> is not "thread-safe" (at least version 1.30 and before)
-therefore also this module does not work in multi-threaded enviroment. 
-It is "fork-safe", however keep in mind that on Win32 the perl "fork" call is 
+therefore also this module does not work in multi-threaded enviroment.
+It is "fork-safe", however keep in mind that on Win32 the perl "fork" call is
 implemented as an emulation via threads - that is the reason why you cannot use
-this store for example when running you catalyst application on Win32 platform 
-with L<Catalyst::Engine::HTTP::Prefork> engine. 
+this store for example when running you catalyst application on Win32 platform
+with L<Catalyst::Engine::HTTP::Prefork> engine.
 
 =head1 CONFIGURATION
 
-These parameters are placed in the hash under the C<session> key in the
+These parameters are placed in the hash under the C<Plugin::Session> key in the
 configuration hash.
 
 =over 4
@@ -192,14 +194,19 @@ L<Catalyst>, L<Catalyst::Plugin::Session>, L<Cache::FastMmap>.
 This module is derived from L<Catalyst::Plugin::Session::FastMmap> code, and
 has been heavily modified since.
 
-Andrew Ford
-Andy Grundman
-Christian Hansen
-Yuval Kogman, C<nothingmuch@woobling.org>
-Marcus Ramberg
-Sebastian Riedel
+  Andrew Ford
+  Andy Grundman
+  Christian Hansen
+  Yuval Kogman, <nothingmuch@woobling.org>
+  Marcus Ramberg
+  Sebastian Riedel
+  Tomas Doran, (t0m) <bobtfish@bobtfish.net>
 
 =head1 COPYRIGHT
+
+Copyright (c) 2005, Yuval Kogman C<nothingmuch@woobling.org>
+
+=head1 LICENSE
 
 This program is free software, you can redistribute it and/or modify it
 under the same terms as Perl itself.
