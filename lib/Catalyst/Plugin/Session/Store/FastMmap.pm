@@ -13,7 +13,7 @@ use Path::Class     ();
 use File::Spec      ();
 use Catalyst::Utils ();
 
-our $VERSION = '0.12';
+our $VERSION = '0.13';
 
 __PACKAGE__->mk_classdata(qw/_session_fastmmap_storage/);
 
@@ -204,7 +204,9 @@ has been heavily modified since.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2005, Yuval Kogman C<nothingmuch@woobling.org>
+Copyright (c) 2005 - 2009
+the Catalyst::Plugin::Session::Store::FastMmap L</AUTHORS>
+as listed above.
 
 =head1 LICENSE
 
