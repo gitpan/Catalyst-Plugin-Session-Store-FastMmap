@@ -13,7 +13,7 @@ use Path::Class     ();
 use File::Spec      ();
 use Catalyst::Utils ();
 
-our $VERSION = '0.13';
+our $VERSION = '0.14';
 
 __PACKAGE__->mk_classdata(qw/_session_fastmmap_storage/);
 
@@ -128,7 +128,7 @@ sub setup_session {
             share_file  => ($file . ''),  # force serialize in case it is a Path::Class object
             (
                 map { $_ => $cfg->{$_} }
-                  grep { exists $cfg->{$_} } qw/init_file cache_size unlink_on_exit/
+                  grep { exists $cfg->{$_} } qw/init_file cache_size page_size unlink_on_exit/
             ),
         )
     );
@@ -148,7 +148,7 @@ This is particularly inappropriate for use as a backend for e.g.
 L<Catalyst::Plugin::Session::PerUser>, for example.
 
 As L<Cache::FastMmap> is not "thread-safe" (at least version 1.30 and before)
-therefore also this module does not work in multi-threaded enviroment.
+therefore also this module does not work in multi-threaded environment.
 It is "fork-safe", however keep in mind that on Win32 the perl "fork" call is
 implemented as an emulation via threads - that is the reason why you cannot use
 this store for example when running you catalyst application on Win32 platform

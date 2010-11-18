@@ -1,3 +1,6 @@
+0.14   xxx
+        - Added "page_size" config option per RT #62335 (karpet)
+
 0.13   18 Oct 2009
         - Fixup copyright ino
 
