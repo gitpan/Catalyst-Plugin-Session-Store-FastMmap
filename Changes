@@ -1,4 +1,7 @@
-0.14   xxx
+0.15   22 Jan 2012
+        - Moose-ified to fix https://rt.cpan.org/Ticket/Display.html?id=74132 (karpet)
+
+0.14   18 Nov 2010
         - Added "page_size" config option per RT #62335 (karpet)
 
 0.13   18 Oct 2009

@@ -1,19 +1,20 @@
 package Catalyst::Plugin::Session::Store::FastMmap;
 
 use strict;
-use base qw/
-    Class::Accessor::Fast
-    Class::Data::Inheritable
-    Catalyst::Plugin::Session::Store/;
-
+use Moose;
 use MRO::Compat;
+use namespace::clean -except => 'meta';
+
+with 'Catalyst::ClassData';
+with 'MooseX::Emulate::Class::Accessor::Fast';
+extends 'Catalyst::Plugin::Session::Store';
 
 use Cache::FastMmap;
 use Path::Class     ();
 use File::Spec      ();
 use Catalyst::Utils ();
 
-our $VERSION = '0.14';
+our $VERSION = '0.15';
 
 __PACKAGE__->mk_classdata(qw/_session_fastmmap_storage/);
 
