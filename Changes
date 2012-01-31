@@ -1,4 +1,7 @@
-0.15   22 Jan 2012
+0.16   24 Jan 2012
+        - Remove superfluous call to ->setup in test app
+
+0.15   18 Jan 2012
         - Moose-ified to fix https://rt.cpan.org/Ticket/Display.html?id=74132 (karpet)
 
 0.14   18 Nov 2010

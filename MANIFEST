@@ -10,3 +10,4 @@ t/03podcoverage.t
 t/basic.t
 t/lib/SessionStoreTest.pm
 t/lib/SessionStoreTest/Controller/Root.pm
+META.json                                Module JSON meta-data (added by MakeMaker)

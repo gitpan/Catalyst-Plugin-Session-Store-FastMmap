@@ -20,7 +20,8 @@ use Catalyst::Plugin::Session::Test::Store (
     package SessionStoreTest;
     use Catalyst;
 
-    __PACKAGE__->setup;
+    # we don't call ->setup because C::P::Session::Test::Store above
+    # calls it for us. -- apeiron, 2012-01-25 
 
 }
 
